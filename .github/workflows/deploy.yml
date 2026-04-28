@@ -34,9 +34,13 @@ jobs:
 
       - name: Upload static website files
         run: |
+          account_key=$(az storage account keys list \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --account-name "${{ vars.AZURE_STORAGE_ACCOUNT }}" \
+            --query "[0].value" -o tsv)
           az storage blob upload-batch \
             --account-name "${{ vars.AZURE_STORAGE_ACCOUNT }}" \
-            --auth-mode login \
+            --account-key "$account_key" \
             --destination '$web' \
             --source dist \
             --overwrite
