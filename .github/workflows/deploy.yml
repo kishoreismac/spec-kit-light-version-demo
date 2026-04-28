@@ -62,8 +62,7 @@ jobs:
       - name: Verify catalog page
         run: |
           if [ -n "$APP_URL" ]; then
-            curl --fail --silent --show-error "$APP_URL/catalog/" > /dev/null || \
-            curl --fail --silent --show-error "$APP_URL/catalog/index.html" > /dev/null
+            curl --fail --silent --show-error "$APP_URL/catalog.html" > /dev/null
           else
             echo "APP_URL not set; skipping catalog page check."
           fi
