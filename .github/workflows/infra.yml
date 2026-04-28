@@ -64,12 +64,6 @@ jobs:
             --query "primaryEndpoints.web" -o tsv)
           echo "site_url=$endpoint" >> "$GITHUB_OUTPUT"
 
-      - name: Set repository variable SITE_URL
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh variable set SITE_URL --body "${{ steps.output_site.outputs.site_url }}"
-
       - name: Summary
         run: |
           echo "Provisioned static hosting endpoint: ${{ steps.output_site.outputs.site_url }}"

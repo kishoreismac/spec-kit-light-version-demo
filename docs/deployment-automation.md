@@ -91,7 +91,7 @@ gh variable set AZURE_LOCATION --body "<azure-region>"
 gh variable set AZURE_STORAGE_ACCOUNT --body "<globally-unique-storage-name>"
 ```
 
-Note: `SITE_URL` is automatically set by the infrastructure workflow after provisioning succeeds.
+Note: `SITE_URL` is optional and can be set manually for monitoring convenience.
 
 ## 8) Infrastructure Workflow (runs first)
 
@@ -102,7 +102,7 @@ What it does:
 - Creates/updates resource group
 - Creates storage account
 - Enables static website hosting
-- Discovers website endpoint and stores it as repository variable `SITE_URL`
+- Discovers website endpoint for deployment verification
 
 Trigger options:
 
@@ -135,6 +135,12 @@ gh workflow run "Deploy Static Site"
 ## 10) Deployment Verification
 
 Automated verification is included in deployment workflow and in monitoring workflow.
+
+To fetch current endpoint directly from Azure:
+
+```powershell
+az storage account show --name <storage-account> --resource-group <resource-group> --query "primaryEndpoints.web" -o tsv
+```
 
 Manual verification command:
 

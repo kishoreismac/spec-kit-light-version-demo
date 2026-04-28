@@ -43,6 +43,10 @@ jobs:
 
       - name: Verify deployment endpoint
         run: |
-          test -n "${{ vars.SITE_URL }}"
-          curl -fS "${{ vars.SITE_URL }}/" > /dev/null
-          curl -fS "${{ vars.SITE_URL }}/catalog/" > /dev/null
+          endpoint=$(az storage account show \
+            --name "${{ vars.AZURE_STORAGE_ACCOUNT }}" \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --query "primaryEndpoints.web" -o tsv)
+          test -n "$endpoint"
+          curl -fS "${endpoint}/" > /dev/null
+          curl -fS "${endpoint}/catalog/" > /dev/null
