@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#fff6e8"/>
+  <polygon points="250,320 560,320 500,160 230,160" fill="#f8bc4e" stroke="#ca8a1f"/>
+  <text x="400" y="360" text-anchor="middle" font-size="36" fill="#8c5a08" font-family="Segoe UI">Cheddar</text>
+</svg>

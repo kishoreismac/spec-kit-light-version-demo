@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#fff8e5"/>
+  <rect x="220" y="180" width="360" height="140" rx="20" fill="#ffe08a" stroke="#d4a93f"/>
+  <text x="400" y="262" text-anchor="middle" font-size="34" fill="#8b6424" font-family="Segoe UI">Salted Butter</text>
+</svg>

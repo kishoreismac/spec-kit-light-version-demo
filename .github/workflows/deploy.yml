@@ -1,0 +1,48 @@
+name: Deploy Static Site
+
+on:
+  workflow_run:
+    workflows: ["Infrastructure Provisioning"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build site
+        run: npm run build
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Upload static website files
+        run: |
+          az storage blob upload-batch \
+            --account-name "${{ vars.AZURE_STORAGE_ACCOUNT }}" \
+            --auth-mode login \
+            --destination '$web' \
+            --source dist \
+            --overwrite
+
+      - name: Verify deployment endpoint
+        run: |
+          test -n "${{ vars.SITE_URL }}"
+          curl -fS "${{ vars.SITE_URL }}/" > /dev/null
+          curl -fS "${{ vars.SITE_URL }}/catalog/" > /dev/null

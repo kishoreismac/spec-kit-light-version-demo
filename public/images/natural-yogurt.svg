@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#fffaf3"/>
+  <ellipse cx="400" cy="250" rx="180" ry="95" fill="#ffffff" stroke="#ceb08b"/>
+  <text x="400" y="255" text-anchor="middle" font-size="32" fill="#845f34" font-family="Segoe UI">Natural Yogurt</text>
+</svg>

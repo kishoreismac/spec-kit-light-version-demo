@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#f0f8ff"/>
+  <rect x="280" y="90" width="240" height="280" rx="26" fill="#ffffff" stroke="#86b2c9"/>
+  <rect x="320" y="50" width="160" height="58" rx="16" fill="#cdebf7"/>
+  <text x="400" y="240" text-anchor="middle" font-size="36" fill="#2b6072" font-family="Segoe UI">Skim Milk</text>
+</svg>
