@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
-  <rect width="800" height="450" fill="#f7fbff"/>
-  <rect x="280" y="90" width="240" height="280" rx="26" fill="#ffffff" stroke="#97b8d8"/>
-  <rect x="320" y="50" width="160" height="58" rx="16" fill="#d9ecff"/>
-  <text x="400" y="240" text-anchor="middle" font-size="36" fill="#2d5d89" font-family="Segoe UI">Whole Milk</text>
-</svg>

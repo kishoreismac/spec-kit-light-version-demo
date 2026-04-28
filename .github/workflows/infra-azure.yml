@@ -1,0 +1,57 @@
+name: Azure Infra
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - "codebase/infra/azure/**"
+      - ".github/workflows/infra-azure.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Provision resource group and static website infra
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az group create --name "$AZURE_RESOURCE_GROUP" --location "$AZURE_LOCATION"
+            az deployment group create \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --template-file "codebase/infra/azure/main.bicep" \
+              --parameters storageAccountName="$AZURE_STORAGE_ACCOUNT" location="$AZURE_LOCATION"
+
+            az storage blob service-properties update \
+              --account-name "$AZURE_STORAGE_ACCOUNT" \
+              --auth-mode login \
+              --static-website \
+              --index-document index.html \
+              --404-document 404.html
+
+            endpoint=$(az storage account show \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --name "$AZURE_STORAGE_ACCOUNT" \
+              --query "primaryEndpoints.web" -o tsv)
+
+            echo "APP_URL=${endpoint%/}" >> "$GITHUB_ENV"
+        env:
+          AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+
+      - name: Output endpoint
+        run: |
+          echo "Provisioned app endpoint: $APP_URL"
